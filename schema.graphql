@@ -1,0 +1,164 @@
+scalar Upload
+directive @auth on FIELD_DEFINITION | FIELD
+
+
+type Query{
+	listAuthors:[Author]! 
+	singleAuthor(id:ID!):Author!
+	listPosts:[Post]!
+	singlePost(id:ID!):Post!
+	listClientes:[Cliente]! 
+	singleCliente(id:ID!):Cliente!
+	listReservas:[Reserva]!
+	singleReserva(id:ID!):Reserva!
+	
+}
+
+type Mutation{
+	createAuthor(data:createAuthorInput!):Author!
+    createCliente(data:createClienteInput!):Author!                      #nuevo
+	login(email:String!,password:String):Auth! 
+    loginCliente(email:String!,password:String):Auth!                    #nuevo
+	updateProfile(data:updateAuthorInput!):Author! @auth
+    updateProfileCliente(data:updateClienteInput!):Author! @auth         #nuevo
+	deleteProfile:String! @auth
+	deleteProfileCliente:String! @auth                                   #nuevo  
+    createPost(data:createPostAuthor!):Post! @auth
+    createReserva(data:createReservaCliente!):Post! @auth                #nuevo
+	updatePost(id:ID!,data:updatePostAuthor!):Post! @auth
+    updateReserva(id:ID!,data:updateReservaCliente!):Post! @auth         #nuevo 
+	deletePost(id:ID):String! @auth
+	deleteReserva(id:ID):String! @auth                                   #nuevo
+
+	deleteAllpost(id:ID):String! @auth
+}
+
+type Auth {
+	token:String!
+	message:String!
+}
+
+type Author{
+	_id:ID
+	first_name:String!
+	last_name:String!
+	password:String
+	email:String!
+	birth_date:String!
+	gender:GENDERS
+	profile_picture:String!
+	posts:[Post]!
+	is_active:Boolean!
+}
+
+type Cliente{
+	_id:ID
+	first_name:String!
+	last_name:String!
+	password:String
+	email:String!
+	birth_date:String!
+	gender:GENDERS
+	profile_picture:String!
+	reserva:[Reserva]!
+	is_active:Boolean!
+}
+
+type Post {
+	_id:ID
+	title:String!
+	content:String!
+	author:Author!
+	cover_photo:String!
+	likes:Int!
+	is_active:Boolean!
+}
+
+type Reserva{
+	_id:ID
+	
+	fecha_reserva:String!
+	fecha_entrada:String!
+	fecha_salida:String!
+	posts:[Post]!
+	costo:Int
+	is_active:Boolean!
+}
+
+enum GENDERS {
+	H
+	M
+	O
+}
+
+input createAuthorInput {              
+	first_name:String!
+	last_name:String!
+	email:String!
+	password:String!
+	birth_date:String
+	gender:GENDERS
+	profile_picture:String
+}
+
+input updateAuthorInput {
+	first_name:String
+	last_name:String
+	email:String
+	password:String
+	birth_date:String
+	gender:GENDERS
+	profile_picture:String
+}
+
+
+input createClienteInput {             #nuevo
+	first_name:String!
+	last_name:String!
+	email:String!
+	password:String!
+	birth_date:String
+	gender:GENDERS
+	profile_picture:String
+}
+
+input updateClienteInput {             #nuevo
+	first_name:String
+	last_name:String
+	email:String
+	password:String
+	birth_date:String
+	gender:GENDERS
+	profile_picture:String
+}
+
+
+input createPostAuthor {
+	title:String!
+	content:String!
+	cover_photo:Upload
+}
+
+input updatePostAuthor {
+	title:String
+	content:String
+	cover_photo:String
+}
+
+
+input createReservaCliente {            #nuevo
+
+	fecha_reserva:String!
+	fecha_entrada:String!
+	fecha_salida:String!
+	costo:Int!
+}
+
+input updateReservaCliente {            #nuevo
+
+	fecha_reserva:String!
+	fecha_entrada:String!
+	fecha_salida:String!
+	costo:Int!
+}
+
