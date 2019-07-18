@@ -3,7 +3,7 @@ const PostModel = require('../models/Post');
 const ClienteModel =  require('../models/Cliente');                     // nuevo
 const ReservaModel =  require('../models/Reserva');                     // nuevo
 const authenticate =  require('../utils/authenticate');
-const authenticateCliente =  require('../utils/authenticateCliente');   // nuevo
+//const authenticateCliente =  require('../utils/authenticateCliente');   // nuevo
 const storage =  require('../utils/storage');
 
 
@@ -41,30 +41,22 @@ const login =  async(root,params,context,info) => {
 //}
 
 const updateProfile = async(root,params,context,info) => {
-console.log(context);
+//console.log(context);
 	const {data} = params
 	const {user} =  context
 	let Author = await AuthorModel.findById(user._id)
-	if(!Author) throw new Error(" Autor No Existe")
+	if(!Author) {
+		Author = await ClienteModel.findById(user._id)
+		if(!Author) throw new Error(" Autor No Existe")
+	} 
+		console.log(Author);
 	Object.keys(data).map( key => Author[key] = data[key])
 	const updatedAuthor = await Author.save({new:true})
 	return updatedAuthor.toObject();
 
 }
 
-const updateProfileCliente = async(root,params,context,info) => {                // nuevo
-	//console.log(params);
-		const {data} = params
-		const {user} =  context
-		let Cliente = await ClienteModel.findById(user._id)
-		console.log(Cliente);
-		if(!Cliente) throw new Error(" Cliente No Existe")
-		Object.keys(data).map( key => Cliente[key] = data[key])
-		const updatedCliente = await Cliente.save({new:true})
-		return updatedCliente.toObject();
-	
-	}
-	
+
 
 const deleteProfile =  async(root,params,context,info) => {
 
@@ -173,7 +165,6 @@ module.exports = {
 	deletePost,
 	deleteAllpost,               // nuevo nuevo
 	createCliente,               // nuevo              // input createClienteInput
-	updateProfileCliente,        // nuevo              // input updateClienteInput
 	deleteProfileCliente,        // nuevo
 	createReserva,               // nuevo              // input createReservaCliente
 	updateReserva,               // nuevo              // input updateReservaCliente

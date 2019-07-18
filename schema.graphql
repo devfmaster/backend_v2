@@ -21,8 +21,7 @@ type Mutation{
 	login(email:String!,password:String):Auth! 
     loginCliente(email:String!,password:String):Auth!                    #nuevo
 	updateProfile(data:updateAuthorInput!):Author! @auth
-    updateProfileCliente(data:updateClienteInput!):Author! @auth         #nuevo
-	deleteProfile:String! @auth
+    deleteProfile:String! @auth
 	deleteProfileCliente:String! @auth                                   #nuevo  
     createPost(data:createPostAuthor!):Post! @auth
     createReserva(data:createReservaCliente!):Post! @auth                #nuevo

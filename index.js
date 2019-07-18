@@ -7,7 +7,7 @@ const resolvers =  require('./resolvers');
 const typeDefs = importSchema(__dirname + '/schema.graphql');
 const { AuthDirective } = require('./resolvers/directives');
 const verifyToken =  require('./utils/verifyToken');
-const verifyTokenCliente =  require('./utils/verifyTokenCliente');
+
 
 const MONGO_URI =  process.env.NODE_ENV == 'test' ? process.env.MONGO_URI_TEST 
 												: process.env.MONGO_URI_DEV 

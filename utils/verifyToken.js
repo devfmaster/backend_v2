@@ -11,9 +11,11 @@ const verifyToken = async (req) => {
 		const payload =  jwt.verify(formatedToken, process.env.SECRET_KEY)
 		if(!payload) 		return req
 		
-		const user =  await AuthorModel.findOne({_id:payload._id})	
-		if(!user) {const user =  await ClienteModel.findOne({_id:payload._id})	  
-				  if(!user)	return req}
+		let user =  await AuthorModel.findOne({_id:payload._id})	
+		if(!user) { 
+			user =  await ClienteModel.findOne({_id:payload._id})	  
+				  if(!user)	return req
+				}
 				  
 		return {...req,user}   
 
