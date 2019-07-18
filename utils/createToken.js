@@ -17,6 +17,7 @@ const createToken = ({_id,email}) => {
 		_id,
 		email,
 		exp
+		// TIPO
 	}
 
 	return jwt.sign(payload, process.env.SECRET_KEY )

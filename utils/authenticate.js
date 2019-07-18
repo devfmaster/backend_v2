@@ -13,16 +13,23 @@ const authenticate =  ({ email, password }) => {
 			if(!user) {
 					
 				AuthorModel.findOne({email}).then((user) => {
-					if(!user) reject(new Error("Usuario no existe"))
-						
+					if(!user) reject(new Error("Author no existe"))
+
+					//rol = rolanfitrion;	
 					bcrypt.compare(password,user.password,(err,isValid) => {
 						if(err) reject(new Error("Error al crear el Token "))
-						isValid ? resolve(  createToken(user)) : reject("Password no coinciden")
+						isValid ? resolve(  createToken(user)) : reject("Password Author no coinciden")
 					})
 				}).catch(e  => reject(e) );
-		    }  
+		    }  else {
+					//rol = rolcliente;	
+						bcrypt.compare(password,user.password,(err,isValid) => {
+						if(err) reject(new Error("Error al crear el Token "))
+						isValid ? resolve(  createToken(user)) : reject("Password Cliente no coinciden")
+					})
+		    }
 		
-	    })
+	    }).catch(e  => reject(e) );
 
 
 	})      

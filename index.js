@@ -36,8 +36,8 @@ const schema =  makeExecutableSchema({
 
 const server =  new GraphQLServer({
 	schema,
-	//context: async({request}) => verifyToken(request) 
-    context: async({request}) => verifyTokenCliente(request) 	
+	//context: async({request}) => verifyTokenCliente(request) 
+    context: async({request}) => verifyToken(request) 	
 })
 
 const options = {

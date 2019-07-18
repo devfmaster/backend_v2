@@ -27,17 +27,18 @@ const login =  async(root,params,context,info) => {
 	const token =  await authenticate(params).catch( e => { throw e } )
 	return {
 		token,
+		params,
 		message:"Ok"
 	}
 }
 
-const loginCliente =  async(root,params,context,info) => {                      // nuevo
-	const token =  await authenticateCliente(params).catch( e => { throw e } )
-	return {
-		token,
-		message:"Ok"
-	}
-}
+//const loginCliente =  async(root,params,context,info) => {                      // nuevo
+//	const token =  await authenticateCliente(params).catch( e => { throw e } )
+//	return {
+//		token,
+//		message:"Ok"
+//	}
+//}
 
 const updateProfile = async(root,params,context,info) => {
 console.log(context);
@@ -52,11 +53,12 @@ console.log(context);
 }
 
 const updateProfileCliente = async(root,params,context,info) => {                // nuevo
-	console.log(context);
+	//console.log(params);
 		const {data} = params
 		const {user} =  context
 		let Cliente = await ClienteModel.findById(user._id)
-		if(!Cliente) throw new Error(" Autor No Existe")
+		console.log(Cliente);
+		if(!Cliente) throw new Error(" Cliente No Existe")
 		Object.keys(data).map( key => Cliente[key] = data[key])
 		const updatedCliente = await Cliente.save({new:true})
 		return updatedCliente.toObject();
@@ -163,7 +165,7 @@ const deleteAllpost = async(root,params,context,info) => {                   // 
 module.exports = {
 	createAuthor,                                      // input createAuthorInput
 	login, 
-	loginCliente,                                                                                     
+	//loginCliente,                                                                                     
 	updateProfile,                                     // input  updateAuthorInput
 	deleteProfile,
 	createPost,                                        // input createPostAuthor
