@@ -13,7 +13,7 @@ const verifyToken = async (req) => {
 		
 		let user =  await AuthorModel.findOne({_id:payload._id})	
 		if(!user) { 
-			user =  await ClienteModel.findOne({_id:payload._id})	  
+			user =  await ClienteModel.findOne({_id:payload._id})	 // aca eliminamos el 'let' 
 				  if(!user)	return req
 				}
 				  

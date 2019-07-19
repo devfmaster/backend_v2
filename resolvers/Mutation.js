@@ -44,16 +44,15 @@ const updateProfile = async(root,params,context,info) => {
 //console.log(context);
 	const {data} = params
 	const {user} =  context
-	let Author = await AuthorModel.findById(user._id)
+	let Author = await AuthorModel.findById(user._id)            // aca hicimos cambio de const a let
 	if(!Author) {
 		Author = await ClienteModel.findById(user._id)
 		if(!Author) throw new Error(" Autor No Existe")
 	} 
-		console.log(Author);
+	//	console.log(Author);
 	Object.keys(data).map( key => Author[key] = data[key])
 	const updatedAuthor = await Author.save({new:true})
 	return updatedAuthor.toObject();
-
 }
 
 
@@ -61,29 +60,22 @@ const updateProfile = async(root,params,context,info) => {
 const deleteProfile =  async(root,params,context,info) => {
 
 	const {user} =  context;
-	const author = await AuthorModel.findById(user._id);
-	if(!author) throw new Error(" Autor No Existe")
-	author.is_active = false;
+	let author = await AuthorModel.findById(user._id);           // 180719  que procese los 2 modelos 
+	if(!Author) {
+		Author = await ClienteModel.findById(user._id)
+		if(!Author) throw new Error(" Autor No Existe")
+	} 
+	cliente.is_active = false;
 	await author.save({new:true})
 
 	return "Usuario eliminado"
 }
 
-const deleteProfileCliente =  async(root,params,context,info) => {               // nuevo
-
-	const {user} =  context;
-	const cliente = await ClienteModel.findById(user._id);
-	if(!cliente) throw new Error(" Autor No Existe")
-	cliente.is_active = false;
-	await cliente.save({new:true})
-
-	return "Cliente eliminado"
-}
 const createPost = async(root,params,context,info) =>{
 
 	const {user} = context;
 	params.data.author = user
-	if(params.data.cover_photo){
+	if(params.data.cover_photo){                                   //verifica si trae urlfoto el post
 		const { createReadStream } = await params.data.cover_photo;
 		const stream =  createReadStream();
 		const { url } =  await storage({ stream });
@@ -100,9 +92,8 @@ const createPost = async(root,params,context,info) =>{
 
 const createReserva = async(root,params,context,info) =>{                      // nuevo
         //  como seleccionar una casa
-	const {user} = context;
-
-	const reserva = await ReservaModel.create(params.data)
+	
+	const reserva = await ReservaModel.create(params.data)                     //param lo toma del input
 								.catch( e => {throw new Error("Error al crear reserva")} )
 	const newReserva = await ReservaModel.findOne({_id:reserva._id}).populate('cliente');
 	await ReservaModel.findByIdAndUpdate(user.id,{$push:{reservas:reserva}})
@@ -165,7 +156,6 @@ module.exports = {
 	deletePost,
 	deleteAllpost,               // nuevo nuevo
 	createCliente,               // nuevo              // input createClienteInput
-	deleteProfileCliente,        // nuevo
 	createReserva,               // nuevo              // input createReservaCliente
 	updateReserva,               // nuevo              // input updateReservaCliente
 	deleteReserva                // nuevo

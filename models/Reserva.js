@@ -5,8 +5,13 @@ const Schema =  mongoose.Schema
 
 const ReservaSchema =  new Schema({
 
-	fecha_reserva:{
-		type:Date
+	cliente:{                             // 071819
+		type:Schema.Types.ObjectId,
+		ref:'clientes'
+	},
+	post:{                                // 071819
+		type:Schema.Types.ObjectId,
+		ref:'posts'
 	},
 
 	fecha_entrada:{

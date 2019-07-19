@@ -19,14 +19,13 @@ type Mutation{
 	createAuthor(data:createAuthorInput!):Author!
     createCliente(data:createClienteInput!):Author!                      #nuevo
 	login(email:String!,password:String):Auth! 
-    loginCliente(email:String!,password:String):Auth!                    #nuevo
-	updateProfile(data:updateAuthorInput!):Author! @auth
+   	updateProfile(data:updateAuthorInput!):Author! @auth
     deleteProfile:String! @auth
 	deleteProfileCliente:String! @auth                                   #nuevo  
     createPost(data:createPostAuthor!):Post! @auth
-    createReserva(data:createReservaCliente!):Post! @auth                #nuevo
+    createReserva(data:createReservaCliente!):Reserva! @auth                #nuevo
 	updatePost(id:ID!,data:updatePostAuthor!):Post! @auth
-    updateReserva(id:ID!,data:updateReservaCliente!):Post! @auth         #nuevo 
+    updateReserva(id:ID!,data:updateReservaCliente!):Reserva! @auth         #nuevo 
 	deletePost(id:ID):String! @auth
 	deleteReserva(id:ID):String! @auth                                   #nuevo
 
@@ -60,7 +59,7 @@ type Cliente{
 	birth_date:String!
 	gender:GENDERS
 	profile_picture:String!
-	reserva:[Reserva]!
+	reserva:[Reserva]!                  #071819
 	is_active:Boolean!
 }
 
@@ -77,10 +76,10 @@ type Post {
 type Reserva{
 	_id:ID
 	
-	fecha_reserva:String!
 	fecha_entrada:String!
 	fecha_salida:String!
-	posts:[Post]!
+	cliente:Cliente!                      #071819 liga a cliente
+	posts:[Post]!                         # liga a tipo post
 	costo:Int
 	is_active:Boolean!
 }
@@ -147,8 +146,7 @@ input updatePostAuthor {
 
 
 input createReservaCliente {            #nuevo
-
-	fecha_reserva:String!
+    post:String!                        #180719
 	fecha_entrada:String!
 	fecha_salida:String!
 	costo:Int!
@@ -156,7 +154,6 @@ input createReservaCliente {            #nuevo
 
 input updateReservaCliente {            #nuevo
 
-	fecha_reserva:String!
 	fecha_entrada:String!
 	fecha_salida:String!
 	costo:Int!
